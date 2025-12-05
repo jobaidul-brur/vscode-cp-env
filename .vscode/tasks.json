@@ -1,0 +1,30 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "cppbuild",
+      "label": "C/C++: g++.exe build active file",
+      "command": "g++.exe",
+      "args": [
+        "-D_DEBUG", // ⬅️ HERE: define macro for all files
+        "-std=c++17", // ⬅️ NEW (set C++17 standard)
+        "-O0", // ⬅️ NEW (faster CP execution)
+        "-Wall", // ⬅️ NEW (better warnings)
+        "-fdiagnostics-color=always",
+        "-g",
+        "${file}",
+        "-o",
+        "${fileDirname}\\${fileBasenameNoExtension}.exe"
+      ],
+      "options": {
+        "cwd": "${fileDirname}"
+      },
+      "problemMatcher": ["$gcc"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "detail": "compiler: g++.exe"
+    }
+  ]
+}

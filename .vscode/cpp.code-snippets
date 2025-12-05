@@ -1,0 +1,200 @@
+{
+  "CP 8-direction Array": {
+    "prefix": "dir8",
+    "body": [
+      "int dx8[8] = {+0, +1, +1, +1, -0, -1, -1, -1};",
+      "int dy8[8] = {-1, -1, -0, +1, +1, +1, +0, -1};",
+      "//             N  NE   E  SE   S  SW   W  NW"
+    ]
+  },
+  "CP 4-direction Array": {
+    "prefix": "dir4",
+    "body": [
+      "int dx4[4] = {+0, +1, -0, -1};",
+      "int dy4[4] = {-1, -0, +1, +0};",
+      "//             N   E   S   W"
+    ]
+  },
+  "CP Knight Moves": {
+    "prefix": "knight",
+    "body": [
+      "int kx[8] = {2, 2, 1, 1, -1, -1, -2, -2};",
+      "int ky[8] = {1, -1, 2, -2, 2, -2, 1, -1};"
+    ]
+  },
+  "Binary Exponentiation": {
+    "prefix": "binexp",
+    "body": [
+      "// Binary exponentiation: computes n^p",
+      "template <typename T>",
+      "T binaryExpo(T n, T p) {",
+      "    if (p == 0) return 1LL;",
+      "    if (p & 1) return n * binaryExpo(n, p - 1);",
+      "    T ret = binaryExpo(n, p / 2);",
+      "    return ret * ret;",
+      "}"
+    ]
+  },
+  "BigMod (with binaryExpo dependency)": {
+    "prefix": "bigmod",
+    "body": [
+      "// Binary exponentiation: computes n^p (dependency for bigMod)",
+      "template <typename T>",
+      "T binaryExpo(T n, T p) {",
+      "    if (p == 0) return 1LL;",
+      "    if (p & 1) return n * binaryExpo(n, p - 1);",
+      "    T ret = binaryExpo(n, p / 2);",
+      "    return ret * ret;",
+      "}",
+      "",
+      "// Modular exponentiation: computes (n^p) % m",
+      "template <typename T>",
+      "T bigMod(T n, T p, T m) {",
+      "    if (p == 0) return 1LL % m;",
+      "    if (p & 1) return (n % m * bigMod(n, p - 1, m)) % m;",
+      "    T ret = bigMod(n, p / 2, m) % m;",
+      "    return (ret * ret) % m;",
+      "}"
+    ]
+  },
+  "Modular Inverse (with dependencies)": {
+    "prefix": "modinv",
+    "body": [
+      "// Binary exponentiation: computes n^p (dependency for bigMod)",
+      "template <typename T>",
+      "T binaryExpo(T n, T p) {",
+      "    if (p == 0) return 1LL;",
+      "    if (p & 1) return n * binaryExpo(n, p - 1);",
+      "    T ret = binaryExpo(n, p / 2);",
+      "    return ret * ret;",
+      "}",
+      "",
+      "// Modular exponentiation: computes (n^p) % m",
+      "template <typename T>",
+      "T bigMod(T n, T p, T m) {",
+      "    if (p == 0) return 1LL % m;",
+      "    if (p & 1) return (n % m * bigMod(n, p - 1, m)) % m;",
+      "    T ret = bigMod(n, p / 2, m) % m;",
+      "    return (ret * ret) % m;",
+      "}",
+      "",
+      "// Modular inverse: computes n^{-1} % m (m must be prime)",
+      "template <typename T>",
+      "T modInv(T n, T m) {",
+      "    return bigMod(n, m - 2, m);",
+      "}"
+    ]
+  },
+  "Z-array": {
+    "prefix": "zarr",
+    "body": [
+      "ll z[maxN+10];",
+      "void calc_z(string s) {",
+      "    ll n = s.size();",
+      "    ll x = 0, y = 0;",
+      "    for (ll i = 1; i < n; i++) {",
+      "        z[i] = max(0LL, min(z[i-x], y-i+1));",
+      "        while(i+z[i] < n && s[z[i]] == s[i+z[i]]) {",
+      "            x = i; y = i+z[i]; z[i]++;",
+      "        }",
+      "    }",
+      "    z[0] = n;",
+      "}"
+    ]
+  },
+  "Prefix Function (KMP)": {
+    "prefix": "kmp",
+    "body": [
+      "ll pi[maxN+10];",
+      "void prefix_function(string s) {",
+      "    ll n = sz(s);",
+      "    pi[0] = 0;",
+      "    for (ll i = 1; i < n; ++i) {",
+      "        ll j = pi[i-1];",
+      "        while (j > 0 && s[i] != s[j]) j = pi[j-1];",
+      "        if (s[i] == s[j]) ++j;",
+      "        pi[i] = j;",
+      "    }",
+      "}"
+    ]
+  },
+  "Bit Sieve": {
+    "prefix": "sieve",
+    "body": [
+      "int marked[(maxA>>6)+2]; // only for odd numbers",
+      "vector<ll> prime;",
+      "#define mark(x) (marked[(x)>>6] |= (1L<<(((x)%64)>>1)))",
+      "#define on(x) (marked[(x)>>6] & (1L<<(((x)%64)>>1)))",
+      "bool is_prime(ll num) {",
+      "    return (num > 1 && (num == 2 || (ODD(num) && !on(num))));",
+      "}",
+      "void sieve(ll n) {",
+      "    ll i, j; mark(1);",
+      "    for (i = 3; i*i <= n; i += 2) {",
+      "        if (!on(i)) { for (j = i*i; j <= n; j += i+i) mark(j); }",
+      "    }",
+      "    prime.clear();",
+      "    prime.push_back(2);",
+      "    for (i = 3; i <= n; i += 2) { if (is_prime(i)) prime.push_back(i); }",
+      "}"
+    ]
+  },
+  "Custom Hash": {
+    "prefix": "chash",
+    "body": [
+      "struct custom_hash {",
+      "    static uint64_t splitmix64(uint64_t x) {",
+      "        x += 0x9e3779b97f4a7c15;",
+      "        x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9;",
+      "        x = (x ^ (x >> 27)) * 0x94d049bb133111eb;",
+      "        return x ^ (x >> 31);",
+      "    }",
+      "    size_t operator()(uint64_t x) const {",
+      "        static const uint64_t FIXED_RANDOM = chrono::steady_clock::now().time_since_epoch().count();",
+      "        return splitmix64(x + FIXED_RANDOM);",
+      "    }",
+      "};"
+    ]
+  },
+  "Polynomial Hash": {
+    "prefix": "phash",
+    "body": [
+      "class PolyHash {",
+      "    vll h, p; ll base, mod;",
+      "public:",
+      "    PolyHash(string s = \"\", ll base=911382323, ll mod=972663749) : base(base), mod(mod) {",
+      "        s = \"#\"+s;",
+      "        h.resize(s.size()+10); p.resize(s.size()+10); h[0] = 0, p[0] = 1;",
+      "        for (ll i = 1; i < s.size(); i++) {",
+      "            h[i] = ((h[i-1]*base)%mod+s[i])%mod;",
+      "            p[i] = (p[i-1]*base)%mod;",
+      "        }",
+      "    }",
+      "    ll hashValue(ll a, ll b) {",
+      "        a++; b++;",
+      "        ll ans = (h[b]-(h[a-1]*p[b-a+1])%mod)%mod;",
+      "        if (ans < 0) ans += mod;",
+      "        return ans;",
+      "    }",
+      "};"
+    ]
+  },
+  "Random Number": {
+    "prefix": "rng",
+    "body": [
+      "mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());",
+      "uniform_int_distribution<ll> dist(l, r);",
+      "ll random_val = dist(rng);"
+    ]
+  },
+  "Read Array Input": {
+    "prefix": "readarr",
+    "body": ["cin >> n;", "f0(i, n) cin >> ${1:arr}[i];"],
+    "description": "Read n elements into arr using f0 loop"
+  },
+  "Print Array": {
+    "prefix": "printarr",
+    "body": ["f0(i, n) cout << ${1:arr}[i] << \" \\n\"[i == n - 1];"],
+    "description": "Print n elements of arr with spaces and newline at end"
+  }
+}

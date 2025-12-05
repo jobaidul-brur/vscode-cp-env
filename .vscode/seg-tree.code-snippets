@@ -1,0 +1,93 @@
+{
+  "Sum Segment Tree": {
+    "prefix": "sumseg",
+    "body": [
+      "class SumSegTree {",
+      "    ll N; vector<ll> tree;",
+      "public:",
+      "    SumSegTree(ll n=maxN) {",
+      "        N = 1LL << ilogb(n); if (N < n) N *= 2;",
+      "        tree.resize(N+N+10, 0);",
+      "    }",
+      "    ll sumq(ll a, ll b) {",
+      "        a += N; b += N;",
+      "        ll sum = 0;",
+      "        while (a <= b) {",
+      "            if (a%2 == 1) sum += tree[a++];",
+      "            if (b%2 == 0) sum += tree[b--];",
+      "            a /= 2; b /= 2;",
+      "        }",
+      "        return sum;",
+      "    }",
+      "    void add(ll k, ll x) {",
+      "        k += N; tree[k] += x;",
+      "        for (k /= 2; k >= 1; k /= 2) {",
+      "            tree[k] = tree[2*k] + tree[2*k+1];",
+      "        }",
+      "    }",
+      "};"
+    ]
+  },
+
+  "Max Segment Tree": {
+    "prefix": "maxseg",
+    "body": [
+      "class MaxSegTree {",
+      "    ll N; vector<ll> tree, v;",
+      "public:",
+      "    MaxSegTree(ll n=maxN) {",
+      "        N = 1LL << ilogb(n); if (N < n) N *= 2;",
+      "        tree.resize(N+N+10, N); v.resize(N+10, mINF);",
+      "        for (ll i = 0; i < N; i++) tree[N+i] = i;",
+      "    }",
+      "    ll maxq(ll a, ll b) {",
+      "        a += N; b += N; ll maxI = N;",
+      "        while (a <= b) {",
+      "            if (a%2 == 1) { if (v[tree[a]] > v[maxI]) maxI = tree[a]; a++; }",
+      "            if (b%2 == 0) { if (v[tree[b]] > v[maxI]) maxI = tree[b]; b--; }",
+      "            a /= 2; b /= 2;",
+      "        }",
+      "        assert(maxI != N);",
+      "        return v[maxI];",
+      "    }",
+      "    void add(ll k, ll x) {",
+      "        v[k] += x; k += N;",
+      "        for (k /= 2; k >= 1; k /= 2) {",
+      "            tree[k] = (v[tree[2*k]] > v[tree[2*k+1]] ? tree[2*k] : tree[2*k+1]);",
+      "        }",
+      "    }",
+      "};"
+    ]
+  },
+
+  "Min Segment Tree": {
+    "prefix": "minseg",
+    "body": [
+      "class MinSegTree {",
+      "    ll N; vector<ll> tree, v;",
+      "public:",
+      "    MinSegTree(ll n=maxN) {",
+      "        N = 1LL << ilogb(n); if (N < n) N *= 2;",
+      "        tree.resize(N+N+10, N); v.resize(N+10, INF);",
+      "        for (ll i = 0; i < N; i++) tree[N+i] = i;",
+      "    }",
+      "    ll minq(ll a, ll b) {",
+      "        a += N; b += N; ll minI = N;",
+      "        while (a <= b) {",
+      "            if (a%2 == 1) { if (v[tree[a]] < v[minI]) minI = tree[a]; a++; }",
+      "            if (b%2 == 0) { if (v[tree[b]] < v[minI]) minI = tree[b]; b--; }",
+      "            a /= 2; b /= 2;",
+      "        }",
+      "        assert(minI != N);",
+      "        return v[minI];",
+      "    }",
+      "    void add(ll k, ll x) {",
+      "        v[k] += x; k += N;",
+      "        for (k /= 2; k >= 1; k /= 2) {",
+      "            tree[k] = (v[tree[2*k]] < v[tree[2*k+1]] ? tree[2*k] : tree[2*k+1]);",
+      "        }",
+      "    }",
+      "};"
+    ]
+  }
+}

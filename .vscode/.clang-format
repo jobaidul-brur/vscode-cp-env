@@ -1,0 +1,32 @@
+BasedOnStyle: LLVM
+
+# --- Competitive Programming Optimized ---
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+
+ColumnLimit: 200 # allow long lines (CP style)
+AlignConsecutiveDeclarations: true     # ← enables vertical alignment
+AlignConsecutiveAssignments: true      # optional, makes '=' line up
+AlwaysBreakTemplateDeclarations: No
+AllowShortIfStatementsOnASingleLine: true
+AllowShortLoopsOnASingleLine: true
+AllowShortFunctionsOnASingleLine: Inline
+AllowShortBlocksOnASingleLine: true
+AllowShortCaseLabelsOnASingleLine: true
+
+BreakBeforeBraces: Attach # puts '{' on the same line
+SpacesInParentheses: false
+SpaceBeforeParens: ControlStatements
+
+KeepEmptyLinesAtTheStartOfBlocks: false
+
+AlignConsecutiveDeclarations: false
+AlignConsecutiveAssignments: false
+AlignConsecutiveMacros: false
+AlignTrailingComments: false
+
+SortIncludes: false # avoid reordering CP includes
+IncludeBlocks: Preserve
+
+NamespaceIndentation: None
